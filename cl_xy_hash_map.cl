@@ -1,3 +1,9 @@
+/* cl_xy_hash_map.cl Implements hash maps that store (x,y) positions with respective values
+ *
+ * Copyright © 2016 Joshua Miklos under the MIT License
+ * See LICENSE file or go to https://opensource.org/licenses/MIT for more details.
+ */
+
 #ifdef HASH_SIZE
 #ifdef HASH_TYPE
 
@@ -47,6 +53,13 @@
 
 #define HASH_SIZE_TYPE size_t
 
+/**
+ * Holds the x and y positions as well as the value at that position
+ *
+ * @param key1 x location
+ * @param key2 y location
+ * @param val value at the x,y location
+ */
 typedef struct BOOST_PP_3CAT(XYHashValueStruct,HASH_SIZE,HASH_TYPE) {
     HASH_SIZE_TYPE key1;
     HASH_SIZE_TYPE key2;
@@ -55,6 +68,12 @@ typedef struct BOOST_PP_3CAT(XYHashValueStruct,HASH_SIZE,HASH_TYPE) {
 } BOOST_PP_3CAT(XYHashValue,HASH_SIZE,HASH_TYPE);
 #define XY_HASH_VALUE(HASH_SIZE,HASH_TYPE) BOOST_PP_3CAT(XYHashValue,HASH_SIZE,HASH_TYPE)
 
+/**
+ * Holds an array of XY_HASH_VALUE(HASH_SIZE,HASH_TYPE)s.
+ * it holds HASH_SIZE positions at max.
+ *
+ * @param table the hash table
+ */
 typedef struct BOOST_PP_3CAT(XYHashTableStruct,HASH_SIZE,HASH_TYPE){
     XY_HASH_VALUE(HASH_SIZE,HASH_TYPE) table[HASH_SIZE];
 } BOOST_PP_3CAT(XYHashTable,HASH_SIZE,HASH_TYPE);
@@ -62,7 +81,12 @@ typedef struct BOOST_PP_3CAT(XYHashTableStruct,HASH_SIZE,HASH_TYPE){
 //todo: test whether making XYHashTable an array of pointers speeds things up
 //todo: if so, define differently, so local versions take advantage of that only
 
-//template stuff here
+/**
+ * Computes hashes of the x and y values until it finds the first unused slot in the table.
+ *
+ * @param h a pointer to the hash table
+ * @param v a pointer to the hash value containing the x and y values
+ */
 inline size_t BOOST_PP_3CAT(xy_hash_find_unused_index,HASH_SIZE, HASH_TYPE)
         (XY_HASH_TABLE(HASH_SIZE,HASH_TYPE)* h,
          XY_HASH_VALUE(HASH_SIZE,HASH_TYPE)* v){
@@ -76,6 +100,12 @@ inline size_t BOOST_PP_3CAT(xy_hash_find_unused_index,HASH_SIZE, HASH_TYPE)
 }
 #define XY_HASH_FIND_UNUSED_INDEX(HASH_SIZE, HASH_TYPE) BOOST_PP_3CAT(xy_hash_find_unused_index,HASH_SIZE, HASH_TYPE)
 
+/**
+ * Computes hashes of the x and y values until it finds the first filled slot in the table.
+ *
+ * @param h a pointer to the hash table
+ * @param v a pointer to the hash value containing the x and y values
+ */
 inline size_t BOOST_PP_3CAT(xy_hash_find_used_index,HASH_SIZE, HASH_TYPE)
         (XY_HASH_TABLE(HASH_SIZE,HASH_TYPE)* h,
          XY_HASH_VALUE(HASH_SIZE,HASH_TYPE)* v){
@@ -92,7 +122,12 @@ inline size_t BOOST_PP_3CAT(xy_hash_find_used_index,HASH_SIZE, HASH_TYPE)
 }
 #define XY_HASH_FIND_USED_INDEX(HASH_SIZE, HASH_TYPE) BOOST_PP_3CAT(xy_hash_find_used_index,HASH_SIZE, HASH_TYPE)
 
-
+/**
+ * Inserts a variable into the hash table.
+ *
+ * @param h a pointer to the hash table
+ * @param v a pointer to the hash value to be inserted into the table
+ */
 void  BOOST_PP_3CAT(insert_xy_hash_table,HASH_SIZE, HASH_TYPE)
         (XY_HASH_TABLE(HASH_SIZE,HASH_TYPE)* h,
          XY_HASH_VALUE(HASH_SIZE,HASH_TYPE)* v){
@@ -102,6 +137,12 @@ void  BOOST_PP_3CAT(insert_xy_hash_table,HASH_SIZE, HASH_TYPE)
 }
 #define XY_HASH_TABLE_INSERT(HASH_SIZE, HASH_TYPE) BOOST_PP_3CAT(insert_xy_hash_table,HASH_SIZE, HASH_TYPE)
 
+/**
+ * Removes a variable from the hash table.
+ *
+ * @param h a pointer to the hash table
+ * @param v a pointer to the hash value containing the x and y position
+ */
 void  BOOST_PP_3CAT(remove_xy_hash_table,HASH_SIZE, HASH_TYPE)
         (XY_HASH_TABLE(HASH_SIZE,HASH_TYPE)* h,
          XY_HASH_VALUE(HASH_SIZE,HASH_TYPE)* v){
@@ -112,6 +153,13 @@ void  BOOST_PP_3CAT(remove_xy_hash_table,HASH_SIZE, HASH_TYPE)
 }
 #define XY_HASH_TABLE_REMOVE(HASH_SIZE, HASH_TYPE) BOOST_PP_3CAT(remove_xy_hash_table,HASH_SIZE, HASH_TYPE)
 
+/**
+ * Returns a variable from the hash table.
+ *
+ * @param h a pointer to the hash table
+ * @param v a pointer to the hash value containing the x,y location,
+ *          it will have its value filled.
+ */
 void BOOST_PP_3CAT(get_xy_hash_table,HASH_SIZE, HASH_TYPE)
         (XY_HASH_TABLE(HASH_SIZE,HASH_TYPE)* h,
          XY_HASH_VALUE(HASH_SIZE,HASH_TYPE)* v){
@@ -120,6 +168,13 @@ void BOOST_PP_3CAT(get_xy_hash_table,HASH_SIZE, HASH_TYPE)
 }
 #define XY_HASH_TABLE_GET(HASH_SIZE, HASH_TYPE) BOOST_PP_3CAT(get_xy_hash_table,HASH_SIZE, HASH_TYPE)
 
+/**
+ * Pops a variable from the hash table.
+ *
+ * @param h a pointer to the hash table
+ * @param v a pointer to the hash value containing the x,y location to be popped,
+ *          it will have its value filled.
+ */
 void BOOST_PP_3CAT(pop_xy_hash_table,HASH_SIZE, HASH_TYPE)
         (XY_HASH_TABLE(HASH_SIZE,HASH_TYPE)* h,
          XY_HASH_VALUE(HASH_SIZE,HASH_TYPE)* v){
