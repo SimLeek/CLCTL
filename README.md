@@ -28,4 +28,5 @@ program.build({device},"-I . -I C:\\msys64\\mingw64\\include");
 
 ##Todo
 
-I need to create a type on the C/C++ side for sharing data between CL and the host.
+*Create a type on the C/C++ side for sharing data between CL and the host.
+*Find a way to add include guards
