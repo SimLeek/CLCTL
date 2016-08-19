@@ -1,5 +1,9 @@
+#ifdef HASH_SIZE
+#ifdef HASH_TYPE
+
 #include <boost/preprocessor/cat.hpp>
 #define BOOST_PP_3CAT(a,b,c) BOOST_PP_CAT(a,BOOST_PP_CAT(b,c))
+//#include <boost/preprocessor/facilities/expand.hpp>
 
 //highly divisible numbers (not divisible by 2) for 'randomly' accessing array after collisions.
 #define hash_mask_2 1 //2^1
@@ -126,3 +130,6 @@ void BOOST_PP_3CAT(pop_xy_hash_table,HASH_SIZE, HASH_TYPE)
     h->table[i].val = -1;
 }
 #define XY_HASH_TABLE_POP(HASH_SIZE, HASH_TYPE) BOOST_PP_3CAT(pop_xy_hash_table,HASH_SIZE, HASH_TYPE)
+
+#endif
+#endif
